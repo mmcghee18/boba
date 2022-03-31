@@ -4,7 +4,9 @@
   import { timeDays, timeSundays } from "d3-time";
   import { timeParse } from "d3-time-format";
   import { extent } from "d3-array";
-  import { scaleLinear, scaleTime } from "d3-scale";
+  import { scaleLinear, scaleTime, scaleOrdinal } from "d3-scale";
+  import { schemeBlues } from "d3-scale-chromatic";
+  import _ from "lodash";
 
   const boxSize = 12;
   const padding = 2;
@@ -54,7 +56,12 @@
     ...d,
     date: parseTime(d.date),
   }));
-  console.log(cleanData);
+
+  const stores = _.uniq(cleanData.map((d) => d.store));
+  const colors = schemeBlues[3];
+  const colorScale = scaleOrdinal().domain(stores).range(colors);
+
+  let hovered = null;
 </script>
 
 <div class="container">
@@ -67,18 +74,21 @@
               date={day}
               {boxSize}
               {yScale}
-              color={cleanData.find((d) => {
-                return d.date.getTime() === day.getTime();
-              })
-                ? "green"
+              color={cleanData.find((d) => d.date.getTime() === day.getTime())
+                ? colorScale(
+                    cleanData.find((d) => d.date.getTime() === day.getTime())
+                      .store
+                  )
                 : null}
               visible={day >= start && day <= end}
+              bind:hovered
             />
           {/each}
         </g>
       {/each}
     </g>
   </svg>
+  <p>{hovered}</p>
 </div>
 
 <style>

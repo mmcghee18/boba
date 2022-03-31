@@ -6,8 +6,8 @@
   export let yScale;
   export let visible;
   export let color;
+  export let hovered;
 
-  let hovered;
   const onHover = (e) => {
     hovered = e.target.id;
   };
@@ -21,7 +21,7 @@
   class:visible
   style={`fill: ${color}`}
   on:mouseenter={onHover}
-  on:mouseleave={() => (hovered = undefined)}
+  on:mouseleave={() => (hovered = null)}
 />
 
 <style>
