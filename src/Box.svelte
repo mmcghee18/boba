@@ -1,11 +1,10 @@
 <script>
-  import { timeFormat } from "d3-time-format";
-
-  export let date;
-  export let boxSize;
-  export let yScale;
-  export let visible;
-  export let color;
+  export let id = "";
+  export let width = 10;
+  export let height = 10;
+  export let y = 0;
+  export let visible = true;
+  export let color = "lightgrey";
   export let hovered;
 
   const onHover = (e) => {
@@ -14,10 +13,10 @@
 </script>
 
 <rect
-  id={timeFormat("%m-%d-%Y")(date)}
-  width={boxSize}
-  height={boxSize}
-  y={yScale(date.getDay())}
+  {id}
+  {width}
+  {height}
+  {y}
   class:visible
   style={`fill: ${color}`}
   on:mouseenter={onHover}
